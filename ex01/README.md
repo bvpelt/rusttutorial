@@ -41,3 +41,6 @@ bvpelt@uranus:~/Develop/rusttutorial/ex01/helloProject$ cargo run
      Running `target/debug/helloProject`
 Hello, RUST from CARGO!
 ```
+
+The project compiles each file that has changed when using ```cargo run```.
+If one works on seperate file you should compile these with ```rustc <filename>``` after each change.
