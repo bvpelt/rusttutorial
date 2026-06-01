@@ -38,4 +38,40 @@ fn main() {
      println!("Age: {}", humanz.1);
      println!("Is Student: {}", humanz.2);
      println!("Array: {:?}", humanz.3);
-    }
+
+     let number_slice: &[i32] = &[1,2,3,4,5];
+     println!("Number slice: {:?}", number_slice);
+
+     let animals_slice: &[&str] = &["Dog", "Cat", "Rabbit"];
+     println!("Animals slice: {:?}", animals_slice);
+
+     let book_slice: &[&String] = &[&"IT".to_string(), &"Cat".to_string(), &"Rabbit".to_string()];
+     println!("Book slice: {:?}", book_slice);
+
+     // Strings stored on the heap.
+     let stone_cold: String = String::from("Amsterdam, Netherlands");
+     println!("Stone Cold: {}", stone_cold);
+     // stone_cold.push_str(" is a great city!"); not mutable, cannot modify the string after it's created
+     // println!("Stone Cold: {}", stone_cold); 
+ 
+     let mut stone_hot: String = String::from("Amsterdam, Netherlands");
+     println!("Stone Hot: {}", stone_hot);
+     stone_hot.push_str(" is a great city!");
+     println!("Stone Hot: {}", stone_hot);
+
+     // Strings stored on the stack.
+     // &str is a reference to a string slice, which is stored on the stack. 
+     // The string cannot be modified after it's created, and it has a fixed size determined at compile time.
+     let string: String = String::from("Hello, world!");
+     let string_slice: &str = &string; // Create a string slice that references the string
+     let string_slice1: &str = &string[0..5]; // Create a string slice that references the string
+     println!("String: {}", string);
+     println!("String slice: {}", string_slice); 
+     println!("String slice 1: {}", string_slice1); 
+
+     print_slice(string_slice);
+ }  
+
+ fn print_slice(slice: &str) {
+    println!("print_slice Slice: {:}", slice);
+ }
