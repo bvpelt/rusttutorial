@@ -3,7 +3,7 @@ Rust tutorial
 
 See: https://www.youtube.com/watch?v=rQ_J9WH6CGk
 
-tot https://youtu.be/rQ_J9WH6CGk?si=jpKqZxYD4R7CWlej&t=2067  34min
+tot https://youtu.be/rQ_J9WH6CGk?si=mkkS2JgUjqQjPqey&t=3534  
 
 RUST is a systems programming languages, that is a compiled language.
 
@@ -62,6 +62,40 @@ cargo --version
 cargo 1.96.0 (30a34c682 2026-05-25)
 ```
 
+## Extensions
+The next extensions are needed:
+- rust-analyzer
+- Even Better TOML
+- codelldb
+
+To enable debugging add the following launch.json in the top directory .vscode
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug myrustapp",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin",
+                    "myrustapp"
+                ],
+                "filter": {
+                    "name": "myrustapp",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
+```
+
 # Git version management
 
 ```bash
@@ -81,3 +115,9 @@ git tag -a v1.0.0 -m "<description>"
 # Push the tag
 git push origin v1.0.0
 ```
+
+# Statements
+- Function and variable names should be written in [snake case](https://en.wikipedia.org/wiki/Snake_case).
+- The order of main and other functions is free. No need to first define functions and then main. (This is called Hoisting).
+- Expressions return a value, statments do not return a value.
+- global variables should be declared const or static.
