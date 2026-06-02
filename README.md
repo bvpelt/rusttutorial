@@ -3,7 +3,7 @@ Rust tutorial
 
 See: https://www.youtube.com/watch?v=rQ_J9WH6CGk
 
-tot https://youtu.be/rQ_J9WH6CGk?si=mkkS2JgUjqQjPqey&t=3534  
+tot https://youtu.be/rQ_J9WH6CGk?si=N0hYEJGrH3s0nhBS&t=4370
 
 RUST is a systems programming languages, that is a compiled language.
 
@@ -121,3 +121,27 @@ git push origin v1.0.0
 - The order of main and other functions is free. No need to first define functions and then main. (This is called Hoisting).
 - Expressions return a value, statments do not return a value.
 - global variables should be declared const or static.
+
+# Memory concepts
+- Ownership
+- Borrowing
+- References
+
+Some programmaing languages let you control memory allocation/deallocation (C, C++). This can cause issues by releasing memory not at all, or more than once.
+
+Other programming languages try to solve this problem by using a garbage collector (Java). This introduces a problem that when the garbage collector is running the program freezes. 
+
+Every value has a single owner.
+
+Rules with regard to ownership:
+- Each value in Rust has one owner
+- There can only be one owner at a time
+- When the owner goes out of scope, the value will be dropped
+
+
+# Index
+
+- [initial / basic](ex01/README.md) [repository](ex01)
+- [primitive datatypes](ex02/README.md) [repository](ex02)
+- [compound datatypes](ex03/README.md) [repository](ex03)
+- [functions](ex04/README.md) [repository](ex04)
