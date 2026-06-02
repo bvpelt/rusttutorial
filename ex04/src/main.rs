@@ -18,7 +18,7 @@ fn main() {
 
     println!("The sum of 5 and 10 is {}.", add(5, 10));
 
-    let z: fn(a:i32, b:i32) -> i32 = add;
+    let z: fn(a: i32, b: i32) -> i32 = add;
     println!("The sum of -5 and 15 is {}.", z(-5, 15));
 
     let weight = 78.0; // in kg
@@ -35,8 +35,11 @@ fn tell_height(height: u32) {
     println!("My height is {} cm.", height);
 }
 
-fn human_id(name: &str, age: u8, height: f32){
-    println!("My name is {}, I'm {} years old and {} cm tall.", name, age, height);
+fn human_id(name: &str, age: u8, height: f32) {
+    println!(
+        "My name is {}, I'm {} years old and {} cm tall.",
+        name, age, height
+    );
 }
 
 fn add(a: i32, b: i32) -> i32 {

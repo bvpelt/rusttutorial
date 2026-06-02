@@ -26,7 +26,6 @@ fn main() {
 
     // immutable borrow to check the balance
     account.check_balance();
-    
 }
 
 struct BankAccount {
@@ -56,7 +55,10 @@ impl BankAccount {
     }
 
     fn check_balance(&self) -> f64 {
-        println!("Account owner: {}, balance: ${:.2}", self.owner, self.balance);
+        println!(
+            "Account owner: {}, balance: ${:.2}",
+            self.owner, self.balance
+        );
         return self.balance;
     }
 }
