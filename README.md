@@ -152,3 +152,4 @@ Rules with regard to ownership:
 - [Shadowing] (ex09/README.md) [repository](ex09)
 - [Comment] (ex10/README.md) [repository](ex10)
 - [Control flow] (ex11/README.md) [repository](ex11)
+- [Structs] (ex12/README.md) [repository](ex12)
