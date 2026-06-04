@@ -141,7 +141,14 @@ Rules with regard to ownership:
 
 # Index
 
-- [initial / basic](ex01/README.md) [repository](ex01)
-- [primitive datatypes](ex02/README.md) [repository](ex02)
-- [compound datatypes](ex03/README.md) [repository](ex03)
-- [functions](ex04/README.md) [repository](ex04)
+- [Initial / basic](ex01/README.md) [repository](ex01)
+- [Primitive datatypes](ex02/README.md) [repository](ex02)
+- [Compound datatypes](ex03/README.md) [repository](ex03)
+- [Functions](ex04/README.md) [repository](ex04)
+- [Ownership] (ex05/README.md) [repository](ex05)
+- [Borrowing and References] (ex06/README.md) [repository](ex06)
+- [Variables & mutability] (ex07/README.md) [repository](ex07)
+- [Constants] (ex08/README.md) [repository](ex08)
+- [Shadowing] (ex09/README.md) [repository](ex09)
+- [Comment] (ex10/README.md) [repository](ex10)
+- [Control flow] (ex11/README.md) [repository](ex11)
