@@ -154,3 +154,4 @@ Rules with regard to ownership:
 - [Control flow] (ex11/README.md) [repository](ex11)
 - [Structs] (ex12/README.md) [repository](ex12)
 - [Enums] (ex13/README.md) [repository](ex13)
+- [Error Handling] (ex14/README.md) [repository](ex14)
