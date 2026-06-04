@@ -3,7 +3,7 @@ Rust tutorial
 
 See: https://www.youtube.com/watch?v=rQ_J9WH6CGk
 
-tot https://youtu.be/rQ_J9WH6CGk?si=N0hYEJGrH3s0nhBS&t=4370
+tot https://youtu.be/rQ_J9WH6CGk?si=FAOIW8DKAsIqKBUR&t=6340
 
 RUST is a systems programming languages, that is a compiled language.
 
