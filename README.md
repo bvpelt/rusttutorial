@@ -156,3 +156,4 @@ Rules with regard to ownership:
 - [Enums](ex13/README.md) [repository](ex13)
 - [Error Handling](ex14/README.md) [repository](ex14)
 - [Collection Types](ex15/README.md) [repository](ex15)
+- [Packageing](ex16/README.md) [repository](ex16)
