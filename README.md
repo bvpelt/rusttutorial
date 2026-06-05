@@ -142,6 +142,7 @@ Rules with regard to ownership:
 # Index
 
 - [Initial / basic](ex01/README.md) [repository](ex01)
+- [Guessing game](guessing/README.md) [repository](guessing)
 - [Primitive datatypes](ex02/README.md) [repository](ex02)
 - [Compound datatypes](ex03/README.md) [repository](ex03)
 - [Functions](ex04/README.md) [repository](ex04)
