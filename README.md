@@ -1,4 +1,4 @@
-# rusttutorial
+# Rusttutorial
 Rust tutorial
 
 See: https://www.youtube.com/watch?v=rQ_J9WH6CGk
@@ -33,6 +33,12 @@ Reference site: [https://rust-lang.org](https://rust-lang.org).
 - [Learn rust](https://rust-lang.org/learn/)
 - [Watch rust videos](https://www.youtube.com/channel/UCaYhcUwRBNscFNUKTjgPFiA)
 - [Standard RUST library](https://doc.rust-lang.org/std/index.html)
+
+The claims rust make may be true, but in order to fullfill these claims the programmer must adhere to all rust concepts like:
+- ownership
+- borrowing
+
+The learning curve is steep and takes a long time.
 
 # Installation
 To install RUST on linux (UBUNTU) use
@@ -158,3 +164,4 @@ Rules with regard to ownership:
 - [Error Handling](ex14/README.md) [repository](ex14)
 - [Collection Types](ex15/README.md) [repository](ex15)
 - [Packageing](ex16/README.md) [repository](ex16)
+- [Generics](ex17/README.md) [repository](ex17)
