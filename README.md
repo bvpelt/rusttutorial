@@ -165,3 +165,4 @@ Rules with regard to ownership:
 - [Collection Types](ex15/README.md) [repository](ex15)
 - [Packageing](ex16/README.md) [repository](ex16)
 - [Generics](ex17/README.md) [repository](ex17)
+- [Buffer](buffer/README.md) [repository](buffer)
