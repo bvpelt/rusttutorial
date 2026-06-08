@@ -1,9 +1,11 @@
 // src/main.rs
 
 use buffer::ThreadSafeBuffer;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::thread;
 use std::time::Duration;
-use tracing::{Level, info};
+use tracing::{Level, info, warn};
 use tracing_subscriber::EnvFilter;
 
 fn main() {
@@ -14,19 +16,39 @@ fn main() {
 
     info!("Applicatie opgestart. Initialiseren van de thread-safe buffer...");
 
+    let max_readers = 2;
+    let max_writers = 5;
+
     // We maken de hoofd-buffer aan
     let buffer = ThreadSafeBuffer::<String>::new(10);
     let mut thread_handles = vec![];
 
+    // 1. Maak arrays van atomaire tellers aan, verpakt in een Arc zodat ze veilig
+    // gedeeld kunnen worden tussen threads. We initialiseren ze op 0.
+    // We maken 6 posities aan voor writers (zodat we index 1 t/m 5 kunnen gebruiken)
+    let writer_counters: Arc<Vec<AtomicUsize>> =
+        Arc::new((0..=max_writers).map(|_| AtomicUsize::new(0)).collect());
+
+    // We maken 5 posities aan voor readers (voor index 1 t/m 4)
+    let reader_counters: Arc<Vec<AtomicUsize>> =
+        Arc::new((0..=max_readers).map(|_| AtomicUsize::new(0)).collect());
+
     // --- WRITERS (Producers) ---
-    for writer_id in 1..=5 {
+    for writer_id in 1..=max_writers {
         let buffer_clone = buffer.clone();
+        // Kloon de Arc pointer naar de tellers voor deze specifieke thread
+        let counters = Arc::clone(&writer_counters);
 
         let handle = thread::spawn(move || {
             for msg_id in 1..=100 {
                 let data = format!("Data van producer {} met index {}", writer_id, msg_id);
 
                 buffer_clone.push(data);
+
+                // 2. Hoog de specifieke teller voor deze writer atomair op met 1.
+                // Ordering::Relaxed is hier perfect en het snelst, omdat de tellers
+                // onafhankelijk van andere geheugenacties opereren.
+                counters[writer_id].fetch_add(1, Ordering::Relaxed);
 
                 info!(
                     writer_id = writer_id,
@@ -43,8 +65,10 @@ fn main() {
     }
 
     // --- READERS (Consumers) ---
-    for reader_id in 1..=2 {
+    for reader_id in 1..=max_readers {
         let buffer_clone = buffer.clone();
+        // Kloon de Arc pointer naar de tellers voor deze specifieke thread
+        let counters = Arc::clone(&reader_counters);
 
         let handle = thread::spawn(move || {
             info!(
@@ -52,7 +76,11 @@ fn main() {
                 "Reader opgestart, begint met luisteren..."
             );
 
-            // GEFIXT: In plaats van een vast aantal, gebruiken we try_pop / pop in een slimme lus.
+            // De retry-teller leeft specifiek binnen deze thread
+            let mut retry_count = 0;
+            let max_retries = 2;
+
+            // In plaats van een vast aantal, gebruiken we try_pop / pop in een slimme lus.
             // Voor dit MPMC patroon loopen we tot we een signaal krijgen, of we gebruiken een loop
             // met een kleine timeout/check. Een elegante manier zonder het kanaal te sluiten
             // is gebruik maken van try_pop wanneer we merken dat er niks meer komt,
@@ -64,6 +92,10 @@ fn main() {
             loop {
                 match buffer_clone.try_pop() {
                     Some(ontvangen_data) => {
+                        retry_count = 0;
+                        // 3. Hoog de specifieke teller voor deze reader atomair op met 1
+                        counters[reader_id].fetch_add(1, Ordering::Relaxed);
+
                         info!(
                             reader_id = reader_id,
                             buffer_grootte = buffer_clone.len(),
@@ -74,6 +106,17 @@ fn main() {
                         thread::sleep(Duration::from_millis(10));
                     }
                     None => {
+                        retry_count += 1;
+                        if retry_count > max_retries {
+                            warn!(
+                                reader_id = reader_id,
+                                retry_count = retry_count - 1,
+                                "Buffer blijft leeg na {} pogingen. Reader stopt.",
+                                max_retries
+                            );
+                            break; // Stap uit de oneindige loop, de thread eindigt hier
+                        }
+
                         info!(
                             reader_id = reader_id,
                             "Wacht totdat er weer data om te verwerken is"
@@ -117,6 +160,47 @@ fn main() {
     for handle in thread_handles {
         handle.join().unwrap();
     }
+    // --- RAPPORTAGE EN STATISTIEKEN TONEN ---
+    info!("==================================================");
+    info!("             BUFFER VERWERKINGS RAPPORT           ");
+    info!("==================================================");
 
-    info!("Alle threads succesvol afgerond. Buffer-verwerking voltooid.");
+    info!("WRITER STATISTIEKEN:");
+    let mut totaal_verstuurd = 0;
+    for writer_id in 1..=max_writers {
+        // .load() leest de huidige atomaire waarde uit
+        let aantal = writer_counters[writer_id].load(Ordering::Relaxed);
+        totaal_verstuurd += aantal;
+        info!(
+            writer_id = writer_id,
+            aantal_verstuurd = aantal,
+            "Writer {} heeft {} berichten verwerkt",
+            writer_id,
+            aantal
+        );
+    }
+
+    info!("--------------------------------------------------");
+    info!("READER STATISTIEKEN:");
+    let mut totaal_ontvangen = 0;
+    for reader_id in 1..=max_readers {
+        let aantal = reader_counters[reader_id].load(Ordering::Relaxed);
+        totaal_ontvangen += aantal;
+        info!(
+            reader_id = reader_id,
+            aantal_ontvangen = aantal,
+            "Reader {} heeft {} berichten ontvangen",
+            reader_id,
+            aantal
+        );
+    }
+
+    info!("--------------------------------------------------");
+    info!(
+        totaal_verstuurd = totaal_verstuurd,
+        totaal_ontvangen = totaal_ontvangen,
+        resterend_in_buffer = buffer.len(),
+        "Eindbalans opgemaakt"
+    );
+    info!("==================================================");
 }
