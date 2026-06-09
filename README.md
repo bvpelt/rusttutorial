@@ -144,6 +144,9 @@ Rules with regard to ownership:
 - There can only be one owner at a time
 - When the owner goes out of scope, the value will be dropped
 
+# Logging
+Conform to opentelemetry since a lot of tooling is already available.
+
 
 # Index
 
@@ -166,3 +169,4 @@ Rules with regard to ownership:
 - [Packageing](ex16/README.md) [repository](ex16)
 - [Generics](ex17/README.md) [repository](ex17)
 - [Buffer](buffer/README.md) [repository](buffer)
+- [Testing](ex18/README.md) [repository](ex18)
