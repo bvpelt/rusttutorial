@@ -127,6 +127,7 @@ Tests can be placed in seperate directorie test under project root and use own c
 
 When using directory structure
 
+```text
 adder
 ├── Cargo.lock
 ├── Cargo.toml
@@ -134,6 +135,7 @@ adder
 │   └── lib.rs
 └── tests
     └── integration_tests.rs
+```
 
 To run the integration_tests use:
 
@@ -151,6 +153,7 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 Common functionality
 
+```text
 adder
 ├── Cargo.lock
 ├── Cargo.toml
@@ -160,7 +163,7 @@ adder
     ├── common
     │   └── mod.rs
     └── integration_test.rs
-
+```
 
 ```bash
 $ cargo test --test integration_tests -- --show-output

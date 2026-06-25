@@ -166,7 +166,7 @@ Conform to opentelemetry since a lot of tooling is already available.
 - [Enums](ex13/README.md) [repository](ex13)
 - [Error Handling](ex14/README.md) [repository](ex14)
 - [Collection Types](ex15/README.md) [repository](ex15)
-- [Packageing](ex16/README.md) [repository](ex16)
+- [Packaging](ex16/README.md) [repository](ex16)
 - [Generics](ex17/README.md) [repository](ex17)
 - [Buffer](buffer/README.md) [repository](buffer)
 - [Testing](ex18/README.md) [repository](ex18)
