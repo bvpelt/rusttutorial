@@ -170,3 +170,4 @@ Conform to opentelemetry since a lot of tooling is already available.
 - [Generics](ex17/README.md) [repository](ex17)
 - [Buffer](buffer/README.md) [repository](buffer)
 - [Testing](ex18/README.md) [repository](ex18)
+- [Minigrep](minigrep/README.md) [repository](minigrep)
