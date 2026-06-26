@@ -16,7 +16,7 @@ fn main() {
     println!("Config: {:#?}", config);
 
     println!("Searching for: {}", config.query);
-    println!("In file      : {}", config.file_path);
+    println!("In file      : {:?}", config.file_paths);
 
     if let Err(e) = run(config) {
         println!("Application error: {e}");
@@ -25,25 +25,61 @@ fn main() {
 }
 
 fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let contents = fs::read_to_string(config.file_path)?;
+    for file_path in &config.file_paths {
+        // Controleer of het pad een directory is
+        match fs::metadata(file_path) {
+            Ok(metadata) if metadata.is_dir() => {
+                eprintln!("Error: '{}' is a directory, skipping", file_path);
+                continue;
+            }
+            Ok(_) => {} // Bestandsmetadata OK, doorgaan
+            Err(e) => {
+                eprintln!("Error accessing '{}': {}", file_path, e);
+                continue;
+            }
+        }
 
-    let results = if config.ignore_case {
-        search_case_insensitive(&config.query, &contents)
-    } else {
-        search(&config.query, &contents)
-    };
+        let bytes = match fs::read(file_path) {
+            Ok(b) => b,
+            Err(e) => {
+                eprintln!("Error reading {}: {}", file_path, e);
+                continue;
+            }
+        };
 
-    for line in results {
-        println!("{line}");
+        // Detecteer binaire bestanden (bevat null-byte)
+        let is_binary = bytes.contains(&0);
+
+        // Converteer altijd met lossy (werkt voor tekst én binair)
+        let contents = String::from_utf8_lossy(&bytes).into_owned();
+
+        let results = if config.ignore_case {
+            search_case_insensitive(&config.query, &contents)
+        } else {
+            search(&config.query, &contents)
+        };
+
+        for line in results {
+            if is_binary {
+                // Limiteer tot 20 karakters voor binaire bestanden
+                let limited = if line.chars().count() > 20 {
+                    format!("{}…", line.chars().take(20).collect::<String>())
+                } else {
+                    line.to_string()
+                };
+                println!("{}:{}", file_path, limited);
+            } else {
+                println!("{}:{}", file_path, line);
+            }
+        }
     }
-
     Ok(())
 }
 
 #[derive(Debug)]
 struct Config {
     query: String,
-    file_path: String,
+    file_paths: Vec<String>,
     pub ignore_case: bool,
 }
 
@@ -72,7 +108,7 @@ impl Config {
         println!("non_flag_args: {:?}", non_flag_args);
 
         // Valideer argumenten
-        if non_flag_args.len() != 2 {
+        if non_flag_args.len() < 2 {
             eprintln!(
                 "Usage: {} [--ignore-case] <search-string> <file_path>",
                 args[0]
@@ -96,11 +132,11 @@ impl Config {
         // Bepaal case-insensitive modus
         let ignore_case = ignore_case_count > 0 || env_ignore_case;
         let query = non_flag_args[0].clone();
-        let file_path = non_flag_args[1].clone();
+        let file_paths = non_flag_args[1..].to_vec();
 
         Ok(Config {
             query,
-            file_path,
+            file_paths,
             ignore_case,
         })
     }
