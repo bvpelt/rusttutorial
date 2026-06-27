@@ -76,6 +76,7 @@ fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/*
 #[derive(Debug)]
 struct Config {
     query: String,
@@ -133,6 +134,73 @@ impl Config {
         let ignore_case = ignore_case_count > 0 || env_ignore_case;
         let query = non_flag_args[0].clone();
         let file_paths = non_flag_args[1..].to_vec();
+
+        Ok(Config {
+            query,
+            file_paths,
+            ignore_case,
+        })
+    }
+}
+*/
+
+#[derive(Debug)]
+struct Config<'a> {
+    query: &'a str,           // Referentie naar de originele string
+    file_paths: Vec<&'a str>, // Referenties naar de originele strings
+    ignore_case: bool,
+}
+
+impl<'a> Config<'a> {
+    fn build(args: &'a [String]) -> Result<Config<'a>, &'static str> {
+        if args.len() < 3 {
+            return Err("not enough arguments");
+        }
+
+        // Tel --ignore-case flags
+        let ignore_case_count = args[1..]
+            .iter()
+            .filter(|arg| arg.as_str() == "--ignore-case") // ⭐ as_str() voor vergelijking
+            .count();
+
+        // Check voor onbekende flags
+        if args[1..]
+            .iter()
+            .any(|arg| arg.as_str().starts_with("--") && arg.as_str() != "--ignore-case")
+        // ⭐ as_str()
+        {
+            eprintln!("Error: Unknown flag found in arguments");
+            std::process::exit(1);
+        }
+
+        // Filter niet-flag argumenten
+        let non_flag_args: Vec<&'a String> = args[1..]
+            .iter()
+            .filter(|arg| arg.as_str() != "--ignore-case") // ⭐ as_str()
+            .collect();
+
+        if non_flag_args.len() < 2 {
+            eprintln!(
+                "Usage: {} [--ignore-case] <search-string> <file_path>",
+                args[0]
+            );
+            std::process::exit(1);
+        }
+
+        let env_ignore_case = std::env::var_os("IGNORE_CASE").is_some();
+
+        if ignore_case_count > 1 {
+            eprintln!("Warning: --ignore-case specified multiple times");
+        }
+        if ignore_case_count > 0 && env_ignore_case {
+            eprintln!(
+                "Warning: Both --ignore-case flag and IGNORE_CASE environment variable are set. Using the flag."
+            );
+        }
+
+        let ignore_case = ignore_case_count > 0 || env_ignore_case;
+        let query = non_flag_args[0].as_str();
+        let file_paths: Vec<&'a str> = non_flag_args[1..].iter().map(|s| s.as_str()).collect();
 
         Ok(Config {
             query,

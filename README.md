@@ -171,3 +171,4 @@ Conform to opentelemetry since a lot of tooling is already available.
 - [Buffer](buffer/README.md) [repository](buffer)
 - [Testing](ex18/README.md) [repository](ex18)
 - [Minigrep](minigrep/README.md) [repository](minigrep)
+- [Closure, Iterator, I/O, optimize minigrep](ex19/README.md) [repository](ex19)
