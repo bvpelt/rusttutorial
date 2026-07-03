@@ -3,8 +3,6 @@ Rust tutorial
 
 See: https://www.youtube.com/watch?v=rQ_J9WH6CGk
 
-tot https://youtu.be/rQ_J9WH6CGk?si=r8zrnJJoJLDnIjle&t=6547
-
 RUST is a systems programming languages, that is a compiled language.
 
 RUST is popular by developers.
@@ -172,3 +170,4 @@ Conform to opentelemetry since a lot of tooling is already available.
 - [Testing](ex18/README.md) [repository](ex18)
 - [Minigrep](minigrep/README.md) [repository](minigrep)
 - [Closure, Iterator, I/O, optimize minigrep](ex19/README.md) [repository](ex19)
+- [Crates](ex20/README) [repository](ex20)
