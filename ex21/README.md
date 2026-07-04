@@ -34,9 +34,7 @@ Hello, world! 10 plus one is 11!
 
 # Running tests
 $ cargo test
-   Compiling adder v0.1.0 (/home/bvpelt/Develop/rusttutorial/ex21/adder)
-   Compiling add_one v0.1.0 (/home/bvpelt/Develop/rusttutorial/ex21/add_one)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
      Running unittests src/lib.rs (target/debug/deps/add_one-ea53099ed6660448)
 
 running 1 test
@@ -54,13 +52,12 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 running 0 tests
 
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
 
 # Only test a particular crate for instance add_one
-
 $ cargo test -p add_one
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
      Running unittests src/lib.rs (target/debug/deps/add_one-ea53099ed6660448)
 
 running 1 test
@@ -74,5 +71,12 @@ running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
+# Run main function adder
+$ cargo run
+   Compiling adder v0.1.0 (/home/bvpelt/Develop/rusttutorial/ex21/adder)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running `target/debug/adder`
+Hello, world! 10 plus one is 11!
+Hello, world! 10 plus two is 12!
 
 ```

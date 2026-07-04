@@ -1,3 +1,11 @@
+/// Add one to the given number.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(10, add_one::add_one(9));
+/// ```
+///
 pub fn add_one(x: i32) -> i32 {
     x + 1
 }
@@ -7,8 +15,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
-        let result = add_one(2);
-        assert_eq!(result, 3);
+    fn add_one_works() {
+        assert_eq!(3, add_one(2));
     }
 }
